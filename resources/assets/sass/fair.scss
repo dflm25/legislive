@@ -1,0 +1,33 @@
+.fair-container {
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "content side"
+        "footer footer";
+
+    grid-template-columns: 1fr 480px;
+    grid-template-rows: auto 1fr auto;
+    grid-gap: 3px;
+    height: 100vh;
+}
+header {
+    grid-area: header;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: red;
+    height: 50px;
+}
+main {
+    grid-area: content;
+    margin-left: 0.3rem;
+    background: steelblue;
+}
+aside {
+    grid-area: side;
+    margin-right: 0.3rem;
+    background: silver;
+}
+footer {
+    grid-area: footer;
+}
