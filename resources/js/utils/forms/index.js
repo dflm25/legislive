@@ -3,12 +3,13 @@
 */
 import React from 'react';
 import Unit from '../../components/forms/Unit';
+import Room from '../../components/forms/Room';
 
 const forms = (form, action) => {
 
     switch (form) {
-        case 'unit':
-            return <Unit action={action} />
+        case 'admin_room':
+            return <Room action={action} />
         break;
         default:
             <div>Something is wrong</div>

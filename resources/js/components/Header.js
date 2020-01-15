@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../store/actions';
 import { get_user } from '../utils/session';
+import { setModal } from '../store/actions';
 
 class Header extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class Header extends Component {
 
   render() {
     let session = get_user();
+    let { setModal } = this.props;
 
     return (
       <nav className="navbar navbar-expand-lg main-navbar">
@@ -171,6 +173,9 @@ class Header extends Component {
                   <Link to="profile" className="dropdown-item has-icon">
                     <i className="far fa-user"></i> Perfil
                   </Link>
+                  <a onClick={ () => setModal(true, 'Administrar mis grupos', 'admin_room', 'create') } className="dropdown-item has-icon">
+                    <i className="fad fa-layer-group"></i> Rooms
+                  </a>
                   <a href="features-activities.html" className="dropdown-item has-icon">
                     <i className="fas fa-bolt"></i> Notas
                   </a>
@@ -190,4 +195,8 @@ const mapStateToProps = state => ({
   isAuthenticated: state.Auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = {
+  setModal : setModal
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
