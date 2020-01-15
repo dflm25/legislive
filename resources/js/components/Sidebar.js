@@ -15,7 +15,7 @@ class Sidebar extends Component {
   }
 
   async componentDidMount () {
-    Http.get(this.api)
+    /*Http.get(this.api)
     .then((response) => {
       const { data } = response;
       this.setState({ rooms: data });
@@ -24,7 +24,7 @@ class Sidebar extends Component {
       this.setState({
         error: 'Unable to fetch data.',
       });
-    });
+    });*/
   }
 
   render() {

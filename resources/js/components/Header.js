@@ -27,7 +27,7 @@ class Header extends Component {
         <form className="form-inline mr-auto">
           <ul className="navbar-nav mr-3">
             <li>
-              <a onClick="#" data-toggle="sidebar" className="nav-link nav-link-lg">
+              <a href="#" data-toggle="sidebar" className="nav-link nav-link-lg">
                 <i className="fas fa-bars"></i>
               </a>
             </li>
@@ -164,7 +164,7 @@ class Header extends Component {
             </div>
             </li>
             <li className="dropdown">
-              <a onClick="#" data-toggle="dropdown" className="nav-link dropdown-toggle nav-link-lg nav-link-user">
+              <a href="#" data-toggle="dropdown" className="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 <img alt="image" src="http://covitalidad.edu.umh.es/wp-content/uploads/sites/1352/2018/06/default-user.png" className="rounded-circle mr-1" />
                 <div className="d-sm-none d-lg-inline-block">{ session.name }</div>
               </a>

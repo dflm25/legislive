@@ -3,13 +3,17 @@
  */
 import React, { useState, useEffect } from 'react';
 import useForm from 'react-hook-form';
-// import { get_levels, get_sub_levels, sendForm } from '../../services/unitsServices';
+import _ from 'lodash';
+import { update_room_status } from '../../services/roomsService';
 import Http from '../../Http';
 
 const Room = (props) => {
-    const [publicRoom, setPublicRoom] = useState([]);
+    const [formStatus, setFormStatus] = useState(false);
+    const [textBtn, setTextBtn] = useState('Crear un grupo');
+    const [roomsData, setRoomData] = useState([]);
     const [errorRoom, setErrorRoom] = useState();
-    const { register, handleSubmit, watch, errors } = useForm()
+    const [checkedItems, setCheckedItems] = useState({}); //plain object as state
+    const { handleSubmit, watch, errors, register } = useForm()
 
     // send units form
     const onSubmit = data => {
@@ -20,20 +24,31 @@ const Room = (props) => {
         Http.get('/get-rooms')
         .then((response) => {
             const { data } = response;
-            setPublicRoom(data);
+            data.selected.map(function(item) {
+                setCheckedItems({
+                    ...checkedItems, [item.name] : 'checked'
+                });
+            })
+            setRoomData(data);
         })
         .catch(() => {
             setErrorRoom('Unable to fetch data.')
         });
     }, [])
-    /*
-    const change = async (e) => {
-        if (e.target.name === 'level') {
-            // set sublevels
-            let dataSubLevels = await get_sub_levels(e.target.value);
-            setSubLevels(dataSubLevels);
-        }
-    }*/
+
+    const handleChange = async (event) => {
+        setCheckedItems({
+            ...checkedItems, [event.target.name] : event.target.checked 
+        });
+        // Actualizamos en base de datos el status
+        let response = await update_room_status({ status: event.target.checked, id: event.target.value })
+    }
+
+    const handleAddRoom = async (event) => {
+        let text = !formStatus ? 'Cancelar' : 'Crear un grupo';
+        setFormStatus(!formStatus)
+        setTextBtn(text)
+    }
 
     return <form onSubmit={handleSubmit(onSubmit)}>
             <div className="">{errorRoom}</div>
@@ -43,10 +58,16 @@ const Room = (props) => {
                     <div className="col-md-12">
                         <div className="form-group">
                         {
-                            publicRoom.map(function (result) {
-                                return <div key={`item-room-${result.id}`} className="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" id={`public-${result.id}`} name={`public-${result.id}`} className="custom-control-input" />
-                                        <label className="custom-control-label" for={`public-${result.id}`}>{result.name}</label>
+                            roomsData.public && roomsData.public.map(function (result) {
+                                return <div key={`item-room-${result.id}`} className="custom-control-inline">
+                                        <input 
+                                            type="checkbox" 
+                                            name={result.name}
+                                            checked={checkedItems[result.name] || false }
+                                            onChange={handleChange}
+                                            value={result.id}
+                                        />
+                                        <label htmlFor={result.name}>{result.name}</label>
                                     </div>
                             })
                         }
@@ -57,22 +78,44 @@ const Room = (props) => {
                     <div className="col-md-12"><p>Grupos privados</p></div>
                     <div className="col-md-12">
                         <div className="form-group">
-                        {/*
-                            publicRoom.map(function (result) {
-                                return <div key={`item-room-${result.id}`} className="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" id="customRadioInline1" name="customRadioInline1" className="custom-control-input" />
-                                        <label className="custom-control-label" for="customRadioInline1">{result.name}</label>
+                        {
+                            roomsData.private && roomsData.private.map(function (result) {
+                                return <div key={`item-room-${result.id}`} className="custom-control-inline">
+                                        <input
+                                            type="checkbox" 
+                                            name={result.name}
+                                            checked={checkedItems[result.name] || false }
+                                            onChange={handleChange}
+                                            value={result.id}
+                                        />
+                                        <label htmlFor={result.name}>{result.name}</label>
                                     </div>
                             })
-                        */}
+                        }
+                        </div>
+                    </div>
+                </div>
+                <div className="row animated fadeIn" style={{ display: formStatus ? 'block' : 'none' }}>
+                    <hr />
+                    <div className="col-md-12"><h4>Crear un grupo</h4></div>
+                    <div className="col-md-12">
+                        <div className="form-group">
+                            <label>Nombre del grupo</label>
+                            <input type="text" name="name" id="name" className="form-control" ref={register({ required: true })} value={``} />
+                            {errors.name && <span>This field is required</span>}
+                        </div>
+                    </div>
+                    <div className="col-md-12">
+                        <div className="form-group">
+                            <label>Quieres invitar a alguien a unirse al grupo</label>
+                            <input type="text" name="name" id="name" className="form-control" ref={register({ required: true })} value={``} />
+                            {errors.name && <span>This field is required</span>}
                         </div>
                     </div>
                 </div>
             </div>
             <div className="text-right">
-                <button className="btn btn-primary">
-                    { (props.action === 'create') ? 'Create' : 'Update' }
-                </button>
+                <a onClick={handleAddRoom} className="text-info">{textBtn}</a>
             </div>
         </form>
 }
