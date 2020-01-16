@@ -24,6 +24,7 @@ Route.post('/login', 'AuthController.login').middleware('guest')
 
 Route.get('/get-rooms', 'RoomController.getAll').middleware('auth');
 Route.post('/update-room', 'RoomController.updateRoomStatus').middleware('auth');
+Route.post('/save-room', 'RoomController.saveRoom').middleware('auth');
 
 Route.resource('*', 'HomeController');
 // Route.post('login', 'UserController.login').middleware('guest');

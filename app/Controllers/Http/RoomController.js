@@ -1,6 +1,7 @@
 'use strict'
 
 const Database = use('Database')
+const { validate } = use('Validator')
 
 class RoomController {
 
@@ -25,6 +26,23 @@ class RoomController {
             selected = await Database.table('user_rooms').where({ 'user_id': auth.user.id, 'room_id': id }).delete()
         }
         return response.json({ msg: 'Información actualizada correctamente', type: 'success', selected: selected })
+    }
+
+    async saveRoom({ request, auth, response }) 
+    {   
+        let selected;
+        const { name, tags } = request.all();
+        const rules = {
+            name: 'required|unique:rooms'
+        }
+
+        const validation = await validateAll(request.all(), rules)
+        if (validation.fails()) {
+            return response.json({ msg: 'Algunos errores en el formulario', type: 'error', errors: validation.messages() })    
+        } else {
+            await Database.insert({ 'name': name, 'type': 'Privado' }).into('rooms')
+        }
+        return response.json({ msg: 'Información actualizada correctamente', type: 'success', errors: [] })
     }
 
 }

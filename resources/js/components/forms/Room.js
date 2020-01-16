@@ -3,9 +3,11 @@
  */
 import React, { useState, useEffect } from 'react';
 import useForm from 'react-hook-form';
-import _ from 'lodash';
-import { update_room_status } from '../../services/roomsService';
+import ReactTagInput from "@pathofdev/react-tag-input";
+import { update_room_status, sendForm } from '../../services/roomsService';
 import Http from '../../Http';
+import { validateEmail } from '../../utils';
+import swal from 'sweetalert';
 
 const Room = (props) => {
     const [formStatus, setFormStatus] = useState(false);
@@ -13,6 +15,8 @@ const Room = (props) => {
     const [roomsData, setRoomData] = useState([]);
     const [errorRoom, setErrorRoom] = useState();
     const [checkedItems, setCheckedItems] = useState({}); //plain object as state
+    const [tags, setTags] = React.useState([])
+    
     const { handleSubmit, watch, errors, register } = useForm()
 
     // send units form
@@ -48,6 +52,17 @@ const Room = (props) => {
         let text = !formStatus ? 'Cancelar' : 'Crear un grupo';
         setFormStatus(!formStatus)
         setTextBtn(text)
+    }
+
+    const handleDelete = (i) => {
+        const { tags } = this.state;
+        this.setState({ tags: tags.filter((tag, index) => index !== i) });
+    }
+
+    const handleAddition = (newtag) => {
+        const tags = [].concat(tags, newtag)
+        console.log('tags', tags)
+        setTags(tags)
     }
 
     return <form onSubmit={handleSubmit(onSubmit)}>
@@ -100,16 +115,40 @@ const Room = (props) => {
                     <div className="col-md-12"><h4>Crear un grupo</h4></div>
                     <div className="col-md-12">
                         <div className="form-group">
-                            <label>Nombre del grupo</label>
-                            <input type="text" name="name" id="name" className="form-control" ref={register({ required: true })} value={``} />
-                            {errors.name && <span>This field is required</span>}
+                            <label>Nombre del grupo (*Nombre debe de ser unico)</label>
+                            <input type="text" name="name" id="name" className="form-control" ref={register({ required: true })} />
+                            {errors.name && <span>Este campo es requerido</span>}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="form-group">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
+                                    <label class="form-check-label" for="inlineRadio1">Privado</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
+                                    <label class="form-check-label" for="inlineRadio2">Publico</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="col-md-12">
                         <div className="form-group">
                             <label>Quieres invitar a alguien a unirse al grupo</label>
-                            <input type="text" name="name" id="name" className="form-control" ref={register({ required: true })} value={``} />
-                            {errors.name && <span>This field is required</span>}
+                            <ReactTagInput 
+                                tags={tags} 
+                                onChange={(newTags) => setTags(newTags)}
+                                placeholder="Escribe un email"
+                                validator={(value) => {
+                                    const isEmail = validateEmail(value)
+                                    if (!isEmail) {
+                                        swal("Error!", "Debes de digitar un email!", "warning");
+                                    }
+                                    return isEmail;
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
