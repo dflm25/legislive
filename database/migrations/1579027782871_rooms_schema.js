@@ -10,6 +10,7 @@ class RoomsSchema extends Schema {
       table.string('name', 255).notNullable().unique()
       table.text('description').notNullable(true)
       table.enu('type', ['Privado', 'Publico']).notNullable(true)
+      table.text('invited').notNullable(true)
       table.timestamps()
     })
   }

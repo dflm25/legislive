@@ -29,3 +29,16 @@ export function sendForm (data) {
         });
     })
 }
+
+export function get_my_rooms () {
+    return new Promise((resolve, reject) => {
+        Http.get(`get-all-rooms`)
+        .then((response) => {
+            const { data } = response;
+            resolve(data)
+        })
+        .catch((error) => {
+            reject(error)
+        });
+    })
+}

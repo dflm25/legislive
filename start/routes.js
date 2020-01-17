@@ -23,6 +23,7 @@ Route.post('/register', 'AuthController.register').middleware('guest')
 Route.post('/login', 'AuthController.login').middleware('guest')
 
 Route.get('/get-rooms', 'RoomController.getAll').middleware('auth');
+Route.get('/get-all-rooms', 'RoomController.getMyRooms').middleware('auth');
 Route.post('/update-room', 'RoomController.updateRoomStatus').middleware('auth');
 Route.post('/save-room', 'RoomController.saveRoom').middleware('auth');
 

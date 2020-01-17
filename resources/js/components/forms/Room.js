@@ -21,7 +21,8 @@ const Room = (props) => {
 
     // send units form
     const onSubmit = data => {
-        sendForm(data)
+        const returnedTarget = Object.assign(data, { tags: tags })
+        sendForm(returnedTarget)
     }
     
     useEffect(() => {
@@ -61,7 +62,6 @@ const Room = (props) => {
 
     const handleAddition = (newtag) => {
         const tags = [].concat(tags, newtag)
-        console.log('tags', tags)
         setTags(tags)
     }
 
@@ -123,13 +123,13 @@ const Room = (props) => {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="form-group">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
-                                    <label class="form-check-label" for="inlineRadio1">Privado</label>
+                                <div className="form-check form-check-inline">
+                                    <input className="form-check-input" type="radio" name="type" value="Privado" ref={register({ required: true })}/>
+                                    <label className="form-check-label" htmlFor="inlineRadio1">Privado</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
-                                    <label class="form-check-label" for="inlineRadio2">Publico</label>
+                                <div className="form-check form-check-inline">
+                                    <input className="form-check-input" type="radio" name="type" value="Publico" ref={register({ required: true })}/>
+                                    <label className="form-check-label" htmlFor="inlineRadio2">Publico</label>
                                 </div>
                             </div>
                         </div>
@@ -138,6 +138,8 @@ const Room = (props) => {
                         <div className="form-group">
                             <label>Quieres invitar a alguien a unirse al grupo</label>
                             <ReactTagInput 
+                                name="emails"
+                                ref={register()}
                                 tags={tags} 
                                 onChange={(newTags) => setTags(newTags)}
                                 placeholder="Escribe un email"
@@ -151,6 +153,7 @@ const Room = (props) => {
                             />
                         </div>
                     </div>
+                    <input className="btn btn-warning" type="submit" />
                 </div>
             </div>
             <div className="text-right">

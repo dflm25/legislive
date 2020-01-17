@@ -1,7 +1,7 @@
 'use strict'
 
 const Database = use('Database')
-const { validate } = use('Validator')
+const { validateAll } = use('Validator')
 
 class RoomController {
 
@@ -14,6 +14,14 @@ class RoomController {
                              .select('user_rooms.room_id', 'rooms.name', 'user_id');
 
         return response.json({ public: publico, private: privado, selected: selected })
+    }
+
+    async getMyRooms ({ request, auth, response }) {
+        let selected = await Database.from('rooms').where('user_id', auth.user.id)
+                             .innerJoin('user_rooms', 'rooms.id', '=', 'user_rooms.room_id')
+                             .select('user_rooms.room_id', 'rooms.name');
+        
+        return response.json(selected)
     }
 
     async updateRoomStatus({ request, auth, response }) 
@@ -31,18 +39,22 @@ class RoomController {
     async saveRoom({ request, auth, response }) 
     {   
         let selected;
-        const { name, tags } = request.all();
+        const { name, type, tags } = request.all();
         const rules = {
-            name: 'required|unique:rooms'
+            name: 'required|unique:rooms',
+            type: 'required'
         }
 
         const validation = await validateAll(request.all(), rules)
         if (validation.fails()) {
             return response.json({ msg: 'Algunos errores en el formulario', type: 'error', errors: validation.messages() })    
         } else {
-            await Database.insert({ 'name': name, 'type': 'Privado' }).into('rooms')
+            // Guardamos informacion del room
+            let lastId = await Database.insert({ 'name': name, 'type': type, invited: tags.join() }).into('rooms');
+            // Relacionamos el usuario al room
+            await Database.insert({ 'user_id': auth.user.id, 'room_id': lastId }).into('user_rooms');
         }
-        return response.json({ msg: 'Información actualizada correctamente', type: 'success', errors: [] })
+        return response.json({ msg: 'Room creado correctamente', type: 'success', errors: [] })
     }
 
 }

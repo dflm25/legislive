@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Ws from '@adonisjs/websocket-client';
 import { left, right } from '../components/chat/ItemChat';
+import socket from '../socket';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -16,31 +16,20 @@ class Dashboard extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.ws = Ws('ws://localhost:3333');
-    this.ws.connect();
-
-    this.chat = this.ws.subscribe('chat')
+    this.ws = new socket();
   }
 
   componentDidMount ()
   {
     let self = this;
-    this.ws.on('open', () => {
-      console.log('Connection initialized')
-    })
-
-    this.ws.on('close', () => {
-      console.log('Connection closed')
-    });
-
-    this.chat.on('message', (message) => {
+    
+    this.ws.chat.on('render_message', (data) => {
       let message_history = self.state.content
-      message_history.push(left(message))
+      message_history.push(left(data))
 
-      // console.log('message', left(message))
-      // console.log('message_history', message_history)
       self.setState({ content: message_history })
     })
+    
   }
 
   onChange (e) {
@@ -49,9 +38,10 @@ class Dashboard extends Component {
 
   handleSubmit (e) { 
     let { message } = this.state;
+    let user = JSON.parse(window.localStorage.getItem('user'));
     e.preventDefault()
-    // console.log('message: ', message);
-    this.chat.emit('message', message)
+
+    this.ws.emit('message', { message, user })
     this.setState({ message: '' })
   }
 
