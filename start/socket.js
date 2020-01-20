@@ -20,8 +20,9 @@ const Ws = use('Ws')
 })*/
 
 
-// Ws.channel('chat', 'ChatController')
-Ws.channel('chat:*', 'RoomController')
+Ws.channel('chat', 'ChatController');
+Ws.channel('room:*', 'RoomController');
+
 // Ws.channel('general', 'GeneralController')
 // Ws.channel('private', 'PrivateController')
 // Ws.channel('staff', 'StaffController')

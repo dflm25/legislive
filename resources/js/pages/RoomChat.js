@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { left, right } from '../components/chat/ItemChat';
+import { Link, useParams } from "react-router-dom";
 import socket from '../socket';
+import { get_room_info } from '../services/roomsService';
 
-class Dashboard extends Component {
+class RoomChat extends Component {
   constructor(props) {
     super(props);
 
@@ -11,7 +13,8 @@ class Dashboard extends Component {
       sub_levels: [],
       loading: false,
       message: '',
-      content: []
+      content: [],
+      roomInfo: []
     };
 
     this.onChange = this.onChange.bind(this);
@@ -19,9 +22,11 @@ class Dashboard extends Component {
     this.ws = new socket();
   }
 
-  componentDidMount ()
+  async componentDidMount ()
   {
     let self = this;
+    let id = 1
+    let info = await get_room_info(id);
     
     this.ws.chat.on('render_message', (data) => {
       let message_history = self.state.content
@@ -29,7 +34,8 @@ class Dashboard extends Component {
 
       self.setState({ content: message_history })
     })
-    
+
+    this.setState({ roomInfo: info })
   }
 
   onChange (e) {
@@ -46,7 +52,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    let { loading, message, content } = this.state;
+    let { loading, message, content, roomInfo } = this.state;
     let self = this;
 
     return (
@@ -58,11 +64,10 @@ class Dashboard extends Component {
                       <div className="col-12 col-sm-6 col-lg-4">
 
                       </div>
-
                       <div className="col-12 col-sm-12 col-lg-12">
                         <div className="card chat-box" id="mychatbox">
                             <div className="card-header">
-                              <h4>#channel 1</h4>
+                              <h4>#{ roomInfo.name }</h4>
                             </div>
                             <div className="card-body chat-content" tabIndex="2" style={{ overflow: 'hidden', outline: 'none' }}>
                                 {content}
@@ -101,4 +106,4 @@ const mapDispatchToProps = {
   
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(RoomChat);

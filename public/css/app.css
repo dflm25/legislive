@@ -4698,8 +4698,7 @@ main {
 
 aside {
   grid-area: side;
-  margin-right: 0.3rem;
-  background: silver; }
+  margin-right: 0.3rem; }
 
 footer {
   grid-area: footer; }

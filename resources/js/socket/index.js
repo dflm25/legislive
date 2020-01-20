@@ -11,7 +11,12 @@ class socket {
         ws.connect();
 
         ws.on('open', () => {
-            console.log('Connection initialized')
+            console.log('Connection initialized open')
+            this.connectMyRooms() // conectamos todos los rooms
+        })
+
+        ws.on('error', () => {
+            console.log('Estoy en error')
         })
         
         ws.on('close', () => {
@@ -20,14 +25,13 @@ class socket {
 
         this.ws = ws;
         this.chat = ws.subscribe('chat')
-        this.connectMyRooms() // conectamos todos los rooms
     }
 
     async connectMyRooms () {
         let self = this;
         let data = await get_my_rooms();
         data.map(function (item) {
-            self.ws.subscribe(`chat:${item.name}_${item.room_id}`)
+            self.ws.subscribe(`room:${item.name}-${item.room_id}`)
         })
     }
 

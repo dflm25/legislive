@@ -16,6 +16,15 @@ class RoomController {
         return response.json({ public: publico, private: privado, selected: selected })
     }
 
+    async getRoomById ({ request, auth, response }) {
+        let { id } = request.all()
+        let data = await Database.from('rooms').where({ 'user_id': auth.user.id, 'rooms.id': id })
+                        .innerJoin('user_rooms', 'rooms.id', '=', 'user_rooms.room_id')
+                        .first('user_rooms.room_id', 'rooms.name', 'user_id')
+
+        return response.json(data)
+    }
+
     async getMyRooms ({ request, auth, response }) {
         let selected = await Database.from('rooms').where('user_id', auth.user.id)
                              .innerJoin('user_rooms', 'rooms.id', '=', 'user_rooms.room_id')

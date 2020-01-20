@@ -5,7 +5,7 @@ class RoomController {
     this.socket = socket
     this.request = request
 
-    console.log('A new subscription for request :::::::::::::::::::::::::: ' + request.topic)
+    // console.log('A new subscription for request :::::::::::::::::::::::::: ' + socket.topic)
     // console.log('A new subscription for socket :::::::::::::::::::::::::: ' + socket.params)
   }
 

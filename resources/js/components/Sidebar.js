@@ -1,44 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as actions from '../store/actions';
-import Http from '../../js/Http';
+import { get_public_rooms } from '../services/roomsService';
 
 class Sidebar extends Component {
   constructor() {
     super();
 
     this.state = {
-      rooms: [],
+      roomsPublic: [],
+      roomsPrivate: []
     };
-    this.api = '/get-rooms';
   }
 
   async componentDidMount () {
-    /*Http.get(this.api)
-    .then((response) => {
-      const { data } = response;
-      this.setState({ rooms: data });
-    })
-    .catch(() => {
-      this.setState({
-        error: 'Unable to fetch data.',
-      });
-    });*/
+    let rooms = await get_public_rooms();
+    this.setState({ roomsPublic: rooms.public, roomsPrivate: rooms.private });
   }
 
   render() {
-    // style={{ display: 'none' }}
-    let { rooms } = this.state
+    // 
+    let { roomsPrivate, roomsPublic } = this.state
     return (
         <div className="main-sidebar">
             <aside id="sidebar-wrapper">
                 <div className="sidebar-brand">
-                    <a href="index.html"><img src="./img/logo.svg" style={{ width: '90%', maxWidth: '140px' }} /></a>
+                    <Link to={`/`}>
+                      <img src="./img/logo.svg" style={{ width: '90%', maxWidth: '140px' }} />
+                    </Link>
                     <br />
                 </div>
                 <div className="sidebar-brand sidebar-brand-sm">
-                    <a href="index.html"><img src="./img/logo-mini.jpg" style={{ width: '90%', maxWidth: '80px' }} /></a>
+                    <Link to={`/`}>
+                      <img src="./img/logo-mini.jpg" style={{ width: '90%', maxWidth: '80px' }} />
+                    </Link>
                     <br />
                 </div>
                 <ul className="sidebar-menu">
@@ -46,16 +41,25 @@ class Sidebar extends Component {
                     <li className="nav-item dropdown">
                       <a href="#" className="nav-link has-dropdown"><i className="fas fa-layer-group"></i><span>SetUp</span></a>
                       <ul className="dropdown-menu">
-                        {
-                          rooms.map(function (result) {
-                            return <li key={`channels-${result.id}`}>
-                              <a className="nav-link" data-to={ result.id }>{ result.name }</a>
-                            </li>
-                          })
-                        }
+                        
                       </ul>
                     </li>
-                    <li className="menu-header">Starter</li>
+                    <li className="menu-header">Grupos publicos</li>
+                    {
+                      roomsPublic.map(function (result) {
+                        return <li key={`channels-${result.id}`}>
+                          <Link className="nav-link" to={`/room/${result.id}`}>{ result.name }</Link>
+                        </li>
+                      })
+                    }
+                    <li className="menu-header">Grupos privados</li>
+                    {
+                      roomsPrivate.map(function (result) {
+                        return <li key={`channels-${result.id}`}>
+                          <Link className="nav-link" to={`/room/${result.id}`}>{ result.name }</Link>
+                        </li>
+                      })
+                    }
                 </ul>
             </aside>
         </div>

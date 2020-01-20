@@ -10,7 +10,7 @@ import NoMatch from '../pages/NoMatch';
 
 // Pages
 import Welcome from '../pages/Welcome';
-import InstitutionProfile from '../pages/InstitutionProfile';
+import RoomChat from '../pages/RoomChat';
 
 // Layouts
 import Auth from '../layout/Auth';
@@ -68,11 +68,11 @@ const routes = [
     layout: App
   },
   {
-    path: '/institution/:id',
+    path: '/room/:id',
     exact: true,
     auth: true,
-    component: InstitutionProfile,
-    layout: Fair
+    component: RoomChat,
+    layout: App
   },
   {
     path: '/welcome',
