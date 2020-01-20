@@ -1,10 +1,84 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { left, right } from '../components/chat/ItemChat';
 import { Link, useParams } from "react-router-dom";
 import socket from '../socket';
 import { get_room_info } from '../services/roomsService';
 
+
+const RoomChat = (props) => {
+    const [roomInfo, setRoomInfo] = useState([]);
+    const [content, setContent] = useState([]);
+    const [message, setMessage] = useState([]);
+    const { id } = useParams();
+
+    const handleSubmit = (e) => { 
+        let user = JSON.parse(window.localStorage.getItem('user'));
+        e.preventDefault()
+
+        // this.ws.emit('message', { message, user })
+        // this.setState({ message: '' })
+    }
+
+    async function get_info () {
+        return await get_room_info(id);
+    }
+
+    useEffect(() => {
+        setRoomInfo(get_info());
+        console.log('Ejecutandome siempre')
+    }, []);
+
+    return <div className="row">
+            <div className="col-12">
+                <div className="card">
+                    <div className="card-body">
+                    <div className="row">
+                        <div className="col-12 col-sm-6 col-lg-4">
+
+                        </div>
+                        <div className="col-12 col-sm-12 col-lg-12">
+                        <div className="card chat-box" id="mychatbox">
+                            <div className="card-header">
+                                <h4>#{ roomInfo.name }</h4>
+                            </div>
+                            <div className="card-body chat-content" tabIndex="2" style={{ overflow: 'hidden', outline: 'none' }}>
+                                {content}
+                            </div>
+                            <div className="card-footer chat-form">
+                                <form id="chat-form" onSubmit={handleSubmit}>
+                                    <input 
+                                        type="text" className="form-control" 
+                                        placeholder="Type a message" 
+                                        name="message"
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                    />
+                                    <button className="btn btn-primary">
+                                        <i className="far fa-paper-plane"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+}
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.Auth.isAuthenticated,
+    user: state.Auth.user,
+});
+  
+const mapDispatchToProps = {
+
+};
+  
+export default connect(mapStateToProps, mapDispatchToProps)(RoomChat);
+/*
 class RoomChat extends Component {
   constructor(props) {
     super(props);
@@ -36,10 +110,6 @@ class RoomChat extends Component {
     })
 
     this.setState({ roomInfo: info })
-  }
-
-  onChange (e) {
-    this.setState({ [e.target.name]: e.target.value });
   }
 
   handleSubmit (e) { 
@@ -96,14 +166,4 @@ class RoomChat extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.Auth.isAuthenticated,
-  user: state.Auth.user,
-});
-
-const mapDispatchToProps = {
-  
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RoomChat);
+*/
