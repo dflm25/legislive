@@ -25,6 +25,8 @@ class socket {
 
         this.ws = ws;
         this.chat = ws.subscribe('chat')
+        this.all = ws.subscribe('room:*')
+        console.log('this.all', this.all)
     }
 
     async connectMyRooms () {

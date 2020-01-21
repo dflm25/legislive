@@ -29,8 +29,6 @@ const RoomChat = (props) => {
       let user = JSON.parse(window.localStorage.getItem('user'));
       e.preventDefault()
 
-      // console.log(objSocket.ws.subscriptions)
-      // console.log('props.currentRoom', props.currentRoom)
       objSocket.ws.getSubscription(`room:${name}-${room_id}`).emit('message', {
         user: user,
         body: message
@@ -38,6 +36,15 @@ const RoomChat = (props) => {
 
       setMessage('')
     }
+
+    console.log('objSocket.all', objSocket.all)
+    
+    objSocket.ws.on('render_message', (data) => {
+      console.log('render_message')
+      let message_history = self.state.content
+      message_history.push(left(data))
+      setContent(message_history);
+    })
 
     return <div className="row">
             <div className="col-12">
