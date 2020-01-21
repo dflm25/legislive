@@ -20,14 +20,17 @@ const RoomChat = (props) => {
         // this.setState({ message: '' })
     }
 
-    async function get_info () {
-        return await get_room_info(id);
-    }
-
     useEffect(() => {
-        setRoomInfo(get_info());
-        console.log('Ejecutandome siempre')
-    }, []);
+      async function get_info () {
+        let data = await get_room_info(id);
+        setRoomInfo(data);
+        return false
+      }
+      
+      get_info()
+      // console.log('Ejecutandome siempre');
+    }, [id]);
+    console.log('roomInfo', roomInfo)
 
     return <div className="row">
             <div className="col-12">

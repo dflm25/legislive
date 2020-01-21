@@ -8,10 +8,10 @@ class RoomsSchema extends Schema {
     this.create('rooms', (table) => {
       table.increments()
       table.string('name', 255).notNullable().unique()
-      table.text('description').notNullable(true)
-      table.enu('type', ['Privado', 'Publico']).notNullable(true)
-      table.text('invited').notNullable(true)
-      table.timestamps()
+      table.text('description').nullable(true)
+      table.enu('type', ['Privado', 'Publico']).defaultTo('Privado')
+      table.text('invited').nullable(true)
+      table.timestamps();
     })
   }
 
