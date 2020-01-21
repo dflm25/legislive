@@ -25,15 +25,14 @@ class socket {
 
         this.ws = ws;
         this.chat = ws.subscribe('chat')
-        this.all = ws.subscribe('room:*')
-        console.log('this.all', this.all)
+        this.room = []
     }
 
     async connectMyRooms () {
         let self = this;
         let data = await get_my_rooms();
         data.map(function (item) {
-            self.ws.subscribe(`room:${item.name}-${item.room_id}`)
+            self.room[`room:${item.name}-${item.room_id}`] = self.ws.subscribe(`room:${item.name}-${item.room_id}`)
         })
     }
 
@@ -44,6 +43,21 @@ class socket {
     get_ws () {
         return this.ws;
     }
+
+    onEvent (room) {
+        // console.log('this.chat :::::::::' + room)
+        // console.log('this.room', this.room[room])
+        if (this.room[room]) {
+            this.room[room].on('render_message', (obj) => {
+                // console.log('render')
+                /*let message_history = self.state.content
+                message_history.push(left(obj))
+                setContent(message_history);
+                */
+            })
+        } 
+    }
+    
 }
 
 export default socket;
