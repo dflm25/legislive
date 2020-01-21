@@ -9,7 +9,6 @@ Tienes que seguir los siguientes pasos
 5. crear una base de datos mysql o sqlite
 6. crear el archivo .env en la raiz del proyecto con la siguiente informacion y crear el APP_KEY con el siguiente comando adonis key:generate
 
-`
 HOST=127.0.0.1
 PORT=3333
 NODE_ENV=development
@@ -24,6 +23,6 @@ DB_PASSWORD=Lae01.
 DB_DATABASE=legislive
 SESSION_DRIVER=cookie
 HASH_DRIVER=bcrypt
-`
+
 
 7. correr migraciones adonis migration:run
