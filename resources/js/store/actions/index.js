@@ -42,3 +42,10 @@ export function setTitle (payload) {
     payload
   };
 }
+
+export function setCurrentRoom (payload) {
+  return { 
+    type: ActionTypes.CURRENT_ROOM,
+    payload
+  };
+}

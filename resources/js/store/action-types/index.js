@@ -14,3 +14,4 @@ export const SHOW_MODAL = 'SHOW_MODAL';
  * General Types
  */
 export const SET_TITLE = 'SET_TITLE';
+export const CURRENT_ROOM = 'CURRENT_ROOM';

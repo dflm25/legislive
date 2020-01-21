@@ -13,6 +13,11 @@ class RoomController {
     console.log('close room:::::::::::::::::::::::::::::::::::::::::::: ', this.socket.id);
   }
 
+  onMessage (data) {
+    // console.log('data:::::::::::::::::::::::::::::::::::::::::::::::::::' + this.socket.topic, data);
+    console.log(this.socket);
+  }
+
   onError () {
     console.log('error room', this.socket.id);
   }

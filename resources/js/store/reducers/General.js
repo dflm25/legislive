@@ -12,3 +12,13 @@ export const title = (state = '', { type, payload = '' }) => {
             return state;
     }
 };
+
+
+export const currentRoom = (state = '', { type, payload = '' }) => {
+    switch (type) {
+        case ActionTypes.CURRENT_ROOM:
+            return payload;
+        default:
+            return state;
+    }
+};

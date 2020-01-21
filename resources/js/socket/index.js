@@ -38,6 +38,10 @@ class socket {
     emit(event, obj) {
         this.chat.emit(event, obj);
     }
+
+    get_ws () {
+        return this.ws;
+    }
 }
 
 export default socket;

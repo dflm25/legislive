@@ -4,7 +4,9 @@ import { left, right } from '../components/chat/ItemChat';
 import { Link, useParams } from "react-router-dom";
 import socket from '../socket';
 import { get_room_info } from '../services/roomsService';
+import { setCurrentRoom } from '../store/actions'
 
+const objSocket = new socket();
 
 const RoomChat = (props) => {
     const [roomInfo, setRoomInfo] = useState([]);
@@ -12,25 +14,30 @@ const RoomChat = (props) => {
     const [message, setMessage] = useState([]);
     const { id } = useParams();
 
-    const handleSubmit = (e) => { 
-        let user = JSON.parse(window.localStorage.getItem('user'));
-        e.preventDefault()
-
-        // this.ws.emit('message', { message, user })
-        // this.setState({ message: '' })
-    }
-
     useEffect(() => {
       async function get_info () {
         let data = await get_room_info(id);
         setRoomInfo(data);
+        props.setCurrentRoom(data)
         return false
       }
-      
-      get_info()
-      // console.log('Ejecutandome siempre');
+      get_info();
     }, [id]);
-    console.log('roomInfo', roomInfo)
+
+    const handleSubmit = (e) => { 
+      let { name, room_id } = props.currentRoom;
+      let user = JSON.parse(window.localStorage.getItem('user'));
+      e.preventDefault()
+
+      // console.log(objSocket.ws.subscriptions)
+      // console.log('props.currentRoom', props.currentRoom)
+      objSocket.ws.getSubscription(`room:${name}-${room_id}`).emit('message', {
+        user: user,
+        body: message
+      })
+
+      setMessage('')
+    }
 
     return <div className="row">
             <div className="col-12">
@@ -74,10 +81,11 @@ const RoomChat = (props) => {
 const mapStateToProps = state => ({
     isAuthenticated: state.Auth.isAuthenticated,
     user: state.Auth.user,
+    currentRoom: state.currentRoom
 });
   
 const mapDispatchToProps = {
-
+  setCurrentRoom: setCurrentRoom
 };
   
 export default connect(mapStateToProps, mapDispatchToProps)(RoomChat);

@@ -2,13 +2,14 @@ import { combineReducers } from 'redux';
 import Auth from './Auth';
 import statusModal from './Modal';
 import persistStore from './persistStore';
-import { title } from './General';
+import { title, currentRoom } from './General';
 
 const RootReducer = combineReducers({ 
     Auth, 
     persistStore, 
     statusModal,
-    title
+    title,
+    currentRoom
 });
 
 export default RootReducer;
