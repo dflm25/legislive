@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { left, right } from '../components/chat/ItemChat';
 import { Link, useParams } from "react-router-dom";
-import socket from '../socket';
+import connection from '../socket';
 import { get_room_info } from '../services/roomsService';
+import { send_message } from '../services/chatService';
 import { setCurrentRoom } from '../store/actions'
 
-const objSocket = new socket();
+let subscription;
 
 const RoomChat = (props) => {
     const [roomInfo, setRoomInfo] = useState([]);
@@ -15,12 +16,18 @@ const RoomChat = (props) => {
     const { id } = useParams();
 
     useEffect(() => {
+      const handleAddMessage = (data) => {
+        console.log('Handle message', data)
+      }
+
       async function get_info () {
+        connection.connect();
+
         let data = await get_room_info(id);
         setRoomInfo(data);
         props.setCurrentRoom(data)
 
-        objSocket.onEvent(`room:${data.name}-${data.room_id}`);
+        subscription = connection.subscribe(`room:${data.name}-${data.room_id}`, handleAddMessage);
         return false;
       }
       get_info();
@@ -31,10 +38,13 @@ const RoomChat = (props) => {
       e.preventDefault()
       let { name, room_id } = props.currentRoom;
 
+      send_message({ user: user, body: message, name: name, room_id: room_id });
+      /*
       objSocket.ws.getSubscription(`room:${name}-${room_id}`).emit('message', {
         user: user,
         body: message
       })
+      */
 
       setMessage('')
     }

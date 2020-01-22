@@ -29,6 +29,13 @@ Route.get('/get-room-info', 'RoomController.getRoomById').middleware('auth');
 Route.post('/update-room', 'RoomController.updateRoomStatus').middleware('auth');
 Route.post('/save-room', 'RoomController.saveRoom').middleware('auth');
 
+Route
+.group(() => {
+    Route.post('save-message', 'ChatController.createMessage')
+    // Route.post('', 'ChatController.create')
+    // Route.get(':id', 'ChatController.select')
+}).prefix('/chat')
+
 Route.resource('*', 'HomeController');
 // Route.post('login', 'UserController.login').middleware('guest');
 // Route.get('users/:id', 'UserController.show').middleware('auth');

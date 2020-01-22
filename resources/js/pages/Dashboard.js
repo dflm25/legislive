@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { left, right } from '../components/chat/ItemChat';
-import socket from '../socket';
+// import socket from '../socket';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -16,19 +16,19 @@ class Dashboard extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.ws = new socket();
+    // this.ws = new socket();
   }
 
   componentDidMount ()
   {
     let self = this;
     
-    this.ws.chat.on('render_message', (data) => {
+    /*this.ws.chat.on('render_message', (data) => {
       let message_history = self.state.content
       message_history.push(left(data))
 
       self.setState({ content: message_history })
-    })
+    })*/
     
   }
 
