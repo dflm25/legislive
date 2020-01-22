@@ -12,15 +12,6 @@ class Chat extends BaseModel {
     // this.addHook('preSave', 'ChatHook.method')
     // Indexes:
     // this.index({}, {background: true})
-    // this._schema.set(option, value)
-  }
-
-  static schema () {
-    return {
-      email: String,
-      name: String,
-      password: String
-    }
   }
 
   /**
@@ -28,7 +19,7 @@ class Chat extends BaseModel {
    */
   static get schema () {
     return {
-      
+			message: String,
     }
   }
 }

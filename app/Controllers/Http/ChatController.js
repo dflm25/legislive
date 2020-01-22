@@ -9,8 +9,6 @@ class ChatController {
     {
         let { body } = request.all();
         const message = await Chat.create({ message: body })
-        // console.log('message', message);
-
         return response.json('message')
     }
 
