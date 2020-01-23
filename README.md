@@ -26,3 +26,9 @@ HASH_DRIVER=bcrypt
 ```
 
 7. correr migraciones adonis migration:run
+
+
+///////////////////////////////////////////////////////////////////
+
+# Ayudas
+https://css-tricks.com/build-a-chat-app-using-react-hooks-in-100-lines-of-code/

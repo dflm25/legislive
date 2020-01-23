@@ -7,9 +7,14 @@ class ChatController {
 
     async createMessage({ request, auth, response }) 
     {
-        let { body } = request.all();
-        const message = await Chat.create({ message: body })
-        return response.json('message')
+        const { body, name, room_id, user } = request.all();
+        const message = await Chat.create({ message: body, user: user, room: { room_id: room_id, name: name } })
+        const topic = Ws.getChannel('room:*').topic(`room:${name}-${room_id}`)
+
+        if(topic) {
+            topic.broadcastToAll('message', message);
+        }
+        return response.json({ msg: 'messages sent', 'type': 'success' })
     }
 
     // Broadcast messages

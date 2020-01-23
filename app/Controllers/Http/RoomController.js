@@ -18,6 +18,7 @@ class RoomController {
 
     async getRoomById ({ request, auth, response }) {
         let { id } = request.all()
+
         let data = await Database.from('rooms').where({ 'user_id': auth.user.id, 'rooms.id': id })
                         .innerJoin('user_rooms', 'rooms.id', '=', 'user_rooms.room_id')
                         .first('user_rooms.room_id', 'rooms.name', 'user_id')

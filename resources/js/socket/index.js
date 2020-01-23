@@ -28,15 +28,14 @@ export class SocketConnection {
       } else {
         const result = this.ws.subscribe(channel);
   
-        result.on('message', message => {
-          console.log('Incoming', message);
+        result.on('message', message => { // console.log('Incoming', message);
           handler(message)
         });
-  
+        
         result.on('error', (error) => {
           console.error(error)
         });
-  
+
         return result
       }
     }

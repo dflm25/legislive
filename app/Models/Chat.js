@@ -19,7 +19,14 @@ class Chat extends BaseModel {
    */
   static get schema () {
     return {
-			message: String,
+      room: {},
+      message: String,
+      user: {},
+      type: {
+        type: String,
+        enum: ['text', 'html'],
+				default: 'text'
+    	},
     }
   }
 }
