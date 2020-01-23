@@ -5,7 +5,6 @@ const User = use('App/Models/User')
 class UserController {
 
     // index
-
     async login ({ auth, request }) {
         const { email, password } = request.all()
         await auth.attempt(email, password)

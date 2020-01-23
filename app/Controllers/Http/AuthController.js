@@ -58,6 +58,11 @@ class AuthController {
         }
     }
 
+    async me({request, auth, response}) {
+      let resp = await User.find(auth.user.id)
+      return response.json(resp)
+    }
+
 }
 
 module.exports = AuthController

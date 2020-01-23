@@ -170,17 +170,17 @@ class Header extends Component {
               </a>
               <div className={`dropdown-menu dropdown-menu-right`}>
                   <div className="dropdown-title">Logged in 5 min ago</div>
-                  <Link to="profile" className="dropdown-item has-icon">
+                  <Link to="/profile" className="dropdown-item has-icon">
                     <i className="far fa-user"></i> Perfil 
                   </Link>
                   <a href="#" onClick={ () => setModal(true, 'Administrar mis grupos', 'admin_room', 'create') } className="dropdown-item has-icon">
                     <i className="fas fa-comment-dots"></i> Rooms
                   </a>
-                  <a href="features-activities.html" className="dropdown-item has-icon">
+                  {/*<a href="features-activities.html" className="dropdown-item has-icon">
                     <i className="fas fa-bolt"></i> Notas
-                  </a>
+                  </a>*/}
                   <div className="dropdown-divider"></div>
-                  <a onClick={this.handleLogout} className="dropdown-item has-icon text-danger">
+                  <a href="#" onClick={this.handleLogout} className="dropdown-item has-icon text-danger">
                     <i className="fas fa-sign-out-alt"></i> Salir
                   </a>
               </div>

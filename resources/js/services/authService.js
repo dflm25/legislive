@@ -79,3 +79,16 @@ export function updatePassword(credentials) {
     })
   );
 }
+
+export function get_profile () {
+  return new Promise((resolve, reject) => {
+      Http.get(`/get-me`)
+      .then((response) => {
+          const { data } = response;
+          resolve(data)
+      })
+      .catch((error) => {
+          reject(error)
+      });
+  })
+}
