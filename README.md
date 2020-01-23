@@ -32,3 +32,4 @@ HASH_DRIVER=bcrypt
 
 # Ayudas
 https://css-tricks.com/build-a-chat-app-using-react-hooks-in-100-lines-of-code/
+https://dev.to/ibrahima92/how-to-replace-component-lifecycle-with-useeffect-hook-in-react-2f9i

@@ -171,10 +171,10 @@ class Header extends Component {
               <div className={`dropdown-menu dropdown-menu-right`}>
                   <div className="dropdown-title">Logged in 5 min ago</div>
                   <Link to="profile" className="dropdown-item has-icon">
-                    <i className="far fa-user"></i> Perfil
+                    <i className="far fa-user"></i> Perfil 
                   </Link>
-                  <a onClick={ () => setModal(true, 'Administrar mis grupos', 'admin_room', 'create') } className="dropdown-item has-icon">
-                    <i className="fad fa-layer-group"></i> Rooms
+                  <a href="#" onClick={ () => setModal(true, 'Administrar mis grupos', 'admin_room', 'create') } className="dropdown-item has-icon">
+                    <i className="fas fa-comment-dots"></i> Rooms
                   </a>
                   <a href="features-activities.html" className="dropdown-item has-icon">
                     <i className="fas fa-bolt"></i> Notas

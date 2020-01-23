@@ -9,8 +9,6 @@ import { send_message } from '../services/chatService';
 import { setCurrentRoom } from '../store/actions'
 import { get_user } from '../utils/session';
 
-let subscription;
-
 const RoomChat = (props) => {
     const [roomInfo, setRoomInfo] = useState([]);
     const [content, setContent] = useImmer([]);
@@ -18,28 +16,35 @@ const RoomChat = (props) => {
     const { id } = useParams();
     
     const handleAddMessage = (data) => {
-      if (data.user.id == get_user().id) {
-        setContent(draft => {  
-          draft.push(left(data))
-        })
+      const { room_id } = props.currentRoom; 
+
+      if (room_id === data.room.id) {
+        if (data.user.id == get_user().id) {
+          setContent(draft => {  
+            draft.push(left(data))
+          })
+        } else {
+          setContent(draft => {  
+            draft.push(right(data))
+          })
+        }
       } else {
-        setContent(draft => {  
-          draft.push(right(data))
-        })
+        // create notification
+        console.log('Create notification', data)
       }
     }
 
     useEffect(() => {
-      setContent(draft => [])
+      setContent(draft => []);
+      // props.currentRoom chat.close()
       async function get_info () {
         connection.connect();
         let userInfo = await get_room_info(id);
         setRoomInfo(userInfo);
         props.setCurrentRoom(userInfo);
         
-        connection.subscribe(`room:${userInfo.name}-${userInfo.room_id}`, handleAddMessage);        
+        connection.subscribe(`room:${userInfo.name}-${userInfo.room_id}`, handleAddMessage);     
       }
-
       get_info();
     }, [id]);
 

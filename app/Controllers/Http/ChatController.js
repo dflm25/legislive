@@ -18,6 +18,7 @@ class ChatController {
     }
 
     // Broadcast messages
+    /*
     broadcast (id, type, data) 
     {
         const channel = Ws.getChannel('room:*')
@@ -34,7 +35,7 @@ class ChatController {
             type,
             data
         });
-    }
+    }*/
 
 }
 

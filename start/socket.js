@@ -22,6 +22,7 @@ const Ws = use('Ws')
 
 Ws.channel('chat', 'ChatController');
 Ws.channel('room:*', 'RoomController');
+// Ws.channel('notifications:*', 'RoomController');
 
 // Ws.channel('general', 'GeneralController')
 // Ws.channel('private', 'PrivateController')

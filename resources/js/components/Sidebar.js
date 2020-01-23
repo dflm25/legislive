@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Switch from "react-switch";
 import { get_public_rooms } from '../services/roomsService';
+import { update_status } from '../services/dashboardService';
+import { host } from '../utils/index';
 
 class Sidebar extends Component {
   constructor() {
@@ -9,8 +12,10 @@ class Sidebar extends Component {
 
     this.state = {
       roomsPublic: [],
-      roomsPrivate: []
+      roomsPrivate: [],
+      checked: false
     };
+    this.handleStatus = this.handleStatus.bind(this);
   }
 
   async componentDidMount () {
@@ -18,21 +23,36 @@ class Sidebar extends Component {
     this.setState({ roomsPublic: rooms.public, roomsPrivate: rooms.private });
   }
 
+  async handleStatus () {
+    this.setState({ checked: !this.state.checked })
+    update_status(!this.state.checked);
+  }
+
   render() {
-    // 
     let { roomsPrivate, roomsPublic } = this.state
+    
     return (
         <div className="main-sidebar">
             <aside id="sidebar-wrapper">
                 <div className="sidebar-brand">
                     <Link to={`/`}>
-                      <img src="./img/logo.svg" style={{ width: '90%', maxWidth: '140px' }} />
+                      <img src={`${host}/img/user.png`} style={{ width: '90%', maxWidth: '140px' }} />
                     </Link>
                     <br />
+                    <strong style={{ verticalAlign: 'super' }}>Estado: </strong>
+                    <Switch 
+                      onChange={this.handleStatus} 
+                      checked={this.state.checked} 
+                      className="react-switch"
+                      height={18}
+                      width={40}
+                      uncheckedIcon={false}
+                      checkedIcon={false}
+                    />
                 </div>
                 <div className="sidebar-brand sidebar-brand-sm">
                     <Link to={`/`}>
-                      <img src="./img/logo-mini.jpg" style={{ width: '90%', maxWidth: '80px' }} />
+                      <img src={`${host}/img/user.png`} style={{ width: '90%', maxWidth: '80px' }} />
                     </Link>
                     <br />
                 </div>

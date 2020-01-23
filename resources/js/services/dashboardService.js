@@ -1,4 +1,5 @@
 import Http from '../Http';
+import { host } from '../utils/index';
 
 export function get_levels() {
     return new Promise((resolve, reject) => {
@@ -42,4 +43,17 @@ export function post_company_levels (credentials) {
             return reject(data);
           });
       })
+}
+
+export function update_status (status) {
+    return new Promise((resolve, reject) => {
+        Http.put(`${host}/update-status`, { status: status })
+        .then((response) => {
+            const { data } = response;
+            resolve(data)
+        })
+        .catch((error) => {
+            reject(error)
+        });
+    })
 }
