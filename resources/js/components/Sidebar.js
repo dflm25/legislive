@@ -30,13 +30,17 @@ class Sidebar extends Component {
 
   render() {
     let { roomsPrivate, roomsPublic } = this.state
+    let { currentInfo } = this.props
     
     return (
         <div className="main-sidebar">
             <aside id="sidebar-wrapper">
                 <div className="sidebar-brand">
                     <Link to={`/`}>
-                      <img src={`${host}/img/user.png`} style={{ width: '90%', maxWidth: '140px' }} />
+                      <img 
+                      src={(currentInfo.picture !== null) ? currentInfo.picture : `${host}/img/user.png` }
+                      style={{ width: '90%', maxWidth: '140px' }} 
+                    />
                     </Link>
                     <br />
                     <strong style={{ verticalAlign: 'super' }}>Estado: </strong>
@@ -89,6 +93,7 @@ class Sidebar extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.Auth.isAuthenticated,
+  currentInfo: state.currentInfo
 });
 
 export default connect(mapStateToProps)(Sidebar);

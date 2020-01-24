@@ -9,16 +9,15 @@ import { host } from '../utils/index';
 
 const Profile = (props) => {
     const [error, setError] = useState('')
-    const [profile, setProfile] = useState([])
-    const [imageProfile, setImageProfile] = useState(`${host}/img/user.png`)
+    const [imageProfile, setImageProfile] = useState(props.currentInfo.picture || `${host}/img/user.png`)
     const [image, setImage] = useState('')
     const [showDiv, setShowDiv] = useState(true)
     const { currentInfo } = props
 
+
     useEffect(() => {
         async function get_info () {
-            let response = await get_profile();
-            setProfile(response);
+            let response = await get_profile();            
             props.setUserInfo(response);
         }
 
@@ -61,15 +60,15 @@ const Profile = (props) => {
     return <div className="py-5">
             { error && <div className="text-center"><p>{error}</p></div> }
             <div className="section-body">
-                <h2 className="section-title">{currentInfo.username && ''}</h2>
-                <p className="section-lead">{currentInfo.description}</p>
+                <h2 className="section-title">{currentInfo.username}</h2>
 
                 <div className="row mt-sm-4">
                     <div className="col-12 col-md-12 col-lg-5">
                         <div className="card profile-widget">
                             <div className="profile-widget-header">
                                 <img 
-                                    onClick={handleChangeImage} alt="image" src={imageProfile} 
+                                    onClick={handleChangeImage} alt={currentInfo.username} 
+                                    src={(props.currentInfo.picture !== null) ? props.currentInfo.picture : `${host}/img/user.png` }
                                     className="rounded-circle profile-widget-picture" 
                                     style={{ cursor: 'pointer' }}
                                 />

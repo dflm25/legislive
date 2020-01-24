@@ -70,11 +70,13 @@ class AuthController {
     }
 
     async updatePhoto({request, auth, response}) {
-      let fileName = `${new Date().getTime()}.${profilePic.subtype}`;
+      
       const profilePic = request.file('file', {
         types: ['image'],
         size: '2mb'
       })
+
+      let fileName = `${new Date().getTime()}.${profilePic.subtype}`;
     
       await profilePic.move(Helpers.publicPath('uploads/profiles'), {
         name: fileName,
@@ -84,10 +86,11 @@ class AuthController {
       if (!profilePic.moved()) {
         return profilePic.error()
       } else {
-        await User.query().where('id', auth.user.id).update({ picture: fileName })
+        await User.query().where('id', auth.user.id).update({ picture: 'uploads/profiles/' + fileName })
       }
 
-      return response.json('File uploaded') 
+      let updated = await User.find(auth.user.id)
+      return response.json(updated) 
     }
     
 
