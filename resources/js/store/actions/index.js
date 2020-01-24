@@ -49,3 +49,10 @@ export function setCurrentRoom (payload) {
     payload
   };
 }
+
+export function setUserInfo (payload) {
+  return { 
+    type: ActionTypes.SET_USER_INFO,
+    payload
+  };
+}

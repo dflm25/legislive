@@ -1,5 +1,6 @@
 import Http from '../Http';
 import * as action from '../store/actions';
+import { host } from '../utils/index';
 
 export function login(credentials) {
   return dispatch => (
@@ -90,5 +91,18 @@ export function get_profile () {
       .catch((error) => {
           reject(error)
       });
+  })
+}
+
+export function update_profile(credentials) {
+  new Promise((resolve, reject) => {
+    Http.put(`${host}/update-me`, credentials)
+    .then((response) => {
+        const { data } = response;
+        resolve(data)
+    })
+    .catch((error) => {
+        reject(error)
+    });
   })
 }

@@ -22,3 +22,12 @@ export const currentRoom = (state = '', { type, payload = '' }) => {
             return state;
     }
 };
+
+export const currentInfo = (state = [], { type, payload = {} }) => {
+    switch (type) {
+        case ActionTypes.SET_USER_INFO:
+            return payload;
+        default:
+            return state;
+    }
+};

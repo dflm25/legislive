@@ -22,6 +22,8 @@ const Route = use('Route')
 Route.post('/register', 'AuthController.register').middleware('guest')
 Route.post('/login', 'AuthController.login').middleware('guest')
 Route.get('/get-me', 'AuthController.me').middleware('auth')
+Route.put('/update-me', 'AuthController.updateMe').middleware('auth')
+Route.put('/update-photo', 'AuthController.updatePhoto').middleware('auth')
 
 Route.get('/get-rooms', 'RoomController.getAll').middleware('auth');
 Route.get('/get-all-rooms', 'RoomController.getMyRooms').middleware('auth');

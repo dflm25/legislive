@@ -13,14 +13,14 @@ export const Password = () => {
                     <div className="row">
                         <div className="form-group col-md-12 col-12">
                             <label htmlFor="newpassword">Nueva contraseña</label>
-                            <input name="newpassword" type="text" className="form-control" value="" ref={register({ required: true })} />
+                            <input name="newpassword" type="text" className="form-control" ref={register({ required: true })} />
                             {errors.newpassword && <div className="invalid-feedback">
                                 Please fill in the first name
                             </div>}
                         </div>
                         <div className="form-group col-md-12 col-12">
                             <label htmlFor="renewpassword">Repertir contraseña</label>
-                            <input name="renewpassword" type="text" className="form-control" value="" ref={register({ required: true })} />
+                            <input name="renewpassword" type="text" className="form-control" ref={register({ required: true })} />
                             {errors.renewpassword && <div className="invalid-feedback">
                                 Please fill in the first name
                             </div>}
